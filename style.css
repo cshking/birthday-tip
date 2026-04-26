@@ -1,0 +1,893 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 导航栏 */
+.nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    color: #999;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.nav-item.active {
+    color: #ff4757;
+}
+
+/* 主内容区 */
+.main {
+    flex: 1;
+    padding: 20px;
+    padding-bottom: 80px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 导航栏 */
+.nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    z-index: 100;
+    height: 70px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: #999;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: color 0.2s ease;
+    min-width: 80px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-item.active {
+    color: #ff4757;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 生日分组区域 */
+.birthday-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #ff4757;
+}
+
+/* 发现页面样式 */
+.discover-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.discover-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.discover-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.discover-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.discover-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.discover-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* 工具页面样式 */
+.tools-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.tool-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.tool-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.tool-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.tool-card p {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+/* 我的页面样式 */
+.my-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.my-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.my-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.my-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.my-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+.my-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.my-card::after {
+    content: '>';
+    font-size: 18px;
+    color: #999;
+}
+
+/* 生日列表 */
+.birthday-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.birthday-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e0e0e0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.birthday-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.birthday-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #666;
+}
+
+.birthday-info {
+    flex: 1;
+}
+
+.name-age {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.age {
+    font-size: 12px;
+    color: #999;
+    background-color: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.date {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.days-left {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ff4757;
+}
+
+/* 添加按钮 */
+.add-btn {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #ff4757;
+    color: white;
+    font-size: 28px;
+    border: none;
+    box-shadow: 0 4px 16px rgba(255, 71, 87, 0.5);
+    cursor: pointer;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+}
+
+/* 弹窗 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* 表单 */
+.form {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #ff4757;
+    box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+}
+
+.gender-options {
+    display: flex;
+    gap: 30px;
+    margin-top: 8px;
+}
+
+.gender-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+    cursor: pointer;
+    font-size: 16px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.gender-options input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+.date-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.date-input {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: #ff4757;
+    box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+}
+
+.date-picker label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: normal;
+    cursor: pointer;
+    margin-bottom: 0;
+    font-size: 16px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.date-picker input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+/* 开关 */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #ff4757;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #ff4757;
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+/* 按钮 */
+.save-btn {
+    width: 100%;
+    padding: 16px;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.save-btn:hover {
+    background-color: #ff3742;
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+}
+
+.delete-btn {
+    flex: 1;
+    padding: 16px;
+    background-color: #f0f0f0;
+    color: #666;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.delete-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.update-btn {
+    flex: 1;
+    padding: 16px;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.update-btn:hover {
+    background-color: #ff3742;
+}
+
+/* 响应式设计 */
+/* 小屏幕手机 */
+@media (max-width: 375px) {
+    .main {
+        padding: 12px;
+        padding-bottom: 90px;
+    }
+
+    .title {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .section-title {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .birthday-card {
+        padding: 12px;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .name {
+        font-size: 14px;
+    }
+
+    .age {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    .date, .days-left {
+        font-size: 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .nav {
+        height: 65px;
+        padding: 12px 0;
+    }
+
+    .nav-item {
+        font-size: 12px;
+        min-width: 70px;
+        padding: 8px 10px;
+    }
+
+    .add-btn {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+        bottom: 80px;
+    }
+
+    .tools-content {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .tool-card {
+        padding: 16px;
+    }
+}
+
+/* 中等屏幕手机 */
+@media (min-width: 376px) and (max-width: 480px) {
+    .main {
+        padding: 15px;
+        padding-bottom: 90px;
+    }
+
+    .title {
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .section-title {
+        font-size: 15px;
+        margin-bottom: 14px;
+    }
+
+    .birthday-card {
+        padding: 14px;
+    }
+
+    .avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 17px;
+    }
+
+    .name {
+        font-size: 15px;
+    }
+
+    .date, .days-left {
+        font-size: 13px;
+    }
+
+    .modal-content {
+        width: 90%;
+        max-height: 85vh;
+    }
+
+    .tools-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+/* 平板和大屏幕手机 */
+@media (min-width: 481px) and (max-width: 768px) {
+    .main {
+        padding: 20px;
+        padding-bottom: 90px;
+    }
+
+    .title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .birthday-card {
+        padding: 16px;
+    }
+
+    .avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+
+    .modal-content {
+        width: 85%;
+        max-width: 400px;
+    }
+
+    .tools-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal.show .modal-content {
+    animation: fadeIn 0.3s ease;
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.empty-state h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.empty-state button {
+    padding: 12px 24px;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* 设置页面样式 */
+.settings-content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.setting-item {
+    margin-bottom: 20px;
+}
+
+.setting-item label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.setting-item input[type="time"],
+.setting-item input[type="text"],
+.setting-item input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 20px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: normal;
+}
+
+.config-info {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #666;
+}
+
+.config-info p {
+    margin: 5px 0;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.cancel-btn {
+    background-color: #f5f5f5;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #e0e0e0;
+}
