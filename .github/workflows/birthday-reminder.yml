@@ -1,1 +1,175 @@
+name: 生日提醒推送
 
+on:
+  schedule:
+    # 每天北京时间 09:00（= UTC 01:00）检查一次
+    - cron: '0 1 * * *'
+  workflow_dispatch: {}      # 允许在 Actions 页面手动点 "Run workflow" 测试
+
+permissions:
+  contents: read
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖（农历换算库）
+        run: pip install --quiet lunar_python
+
+      - name: 写入推送脚本
+        run: |
+          cat > reminder.py << 'PYEOF'
+          #!/usr/bin/env python3
+          # -*- coding: utf-8 -*-
+          import os, io, sys, json, datetime, urllib.request, urllib.parse
+          try:
+              sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+          except Exception:
+              pass
+
+          PUSH_GROUPS = [g.strip() for g in os.environ.get("PUSH_GROUPS", "我的好友").split(",") if g.strip()]
+          try:
+              PUSH_DAYS = [int(x) for x in os.environ.get("PUSH_DAYS", "1").split(",") if x.strip()]
+          except ValueError:
+              PUSH_DAYS = [1]
+          SERVERCHAN_TOKEN = os.environ.get("SERVERCHAN_TOKEN", "")
+          BIRTHDAYS_JSON_ENV = os.environ.get("BIRTHDAYS_JSON", "")
+          DRY_RUN = os.environ.get("DRY_RUN", "").lower() in ("1", "true", "yes")
+
+          HERE = os.path.dirname(os.path.abspath(__file__))
+          CANDIDATES = [
+              os.path.join(HERE, "birthdays.json"),
+              os.path.join(HERE, "..", "birthdays.json"),
+          ]
+
+          def load_birthdays():
+              if BIRTHDAYS_JSON_ENV:
+                  try:
+                      data = json.loads(BIRTHDAYS_JSON_ENV)
+                      src = "环境变量 BIRTHDAYS_JSON (Secret)"
+                  except json.JSONDecodeError as e:
+                      print("[错误] BIRTHDAYS_JSON 解析失败：%s" % e); sys.exit(1)
+              else:
+                  path = next((p for p in CANDIDATES if os.path.exists(p)), None)
+                  if not path:
+                      print("[错误] 未设置 BIRTHDAYS_JSON 且仓库内找不到 birthdays.json。"); sys.exit(1)
+                  with open(path, "r", encoding="utf-8") as f:
+                      data = json.load(f)
+                  src = path
+              if isinstance(data, dict):
+                  data = data.get("people", [])
+              if not isinstance(data, list):
+                  print("[错误] 生日数据格式不正确。"); sys.exit(1)
+              print("[信息] 数据源：%s，共 %d 条记录" % (src, len(data)))
+              return data
+
+          def _lunar_to_solar(year, month, day):
+              from lunar_python import Lunar, Solar
+              lunar = Lunar.fromYmd(year, month, day)
+              solar = lunar.getSolar()
+              return datetime.date(solar.getYear(), solar.getMonth(), solar.getDay())
+
+          def next_birthday(person, today):
+              try:
+                  y = int(person.get("year")); m = int(person.get("month")); d = int(person.get("day"))
+              except (TypeError, ValueError):
+                  return None
+              is_lunar = bool(person.get("isLunar", False))
+              if is_lunar:
+                  cands = []
+                  for yy in (today.year, today.year + 1):
+                      try:
+                          cands.append(_lunar_to_solar(yy, m, d))
+                      except Exception:
+                          pass
+                  cands = [c for c in cands if c >= today]
+                  if not cands:
+                      return None
+                  target = min(cands); kind = "农历"
+              else:
+                  try:
+                      c1 = datetime.date(today.year, m, d)
+                  except ValueError:
+                      return None
+                  c2 = datetime.date(today.year + 1, m, d)
+                  target = c1 if c1 >= today else c2; kind = "公历"
+              return target, (target - today).days, kind
+
+          def push_serverchan(token, title, content):
+              url = "https://sctapi.ftqq.com/%s.send" % token
+              post = urllib.parse.urlencode({"title": title, "desp": content}).encode("utf-8")
+              req = urllib.request.Request(url, data=post, method="POST")
+              req.add_header("Content-Type", "application/x-www-form-urlencoded")
+              try:
+                  with urllib.request.urlopen(req, timeout=15) as resp:
+                      body = resp.read().decode("utf-8", errors="replace")
+                  result = json.loads(body)
+                  if result.get("code") == 0:
+                      return True, result.get("message", "OK")
+                  return False, body
+              except Exception as e:
+                  return False, str(e)
+
+          def main():
+              today = datetime.date.today()
+              print("[信息] 当前日期：%s" % today.isoformat())
+              print("[信息] 推送分组：%s；提前天数：%s" % (PUSH_GROUPS, PUSH_DAYS))
+              people = load_birthdays()
+              matched = []; skip_g = skip_r = invalid = 0
+              for p in people:
+                  name = p.get("name", "(无名)"); group = p.get("group", ""); reminder = p.get("reminder", True)
+                  if PUSH_GROUPS and group not in PUSH_GROUPS:
+                      skip_g += 1; continue
+                  if reminder is False:
+                      skip_r += 1; continue
+                  nb = next_birthday(p, today)
+                  if nb is None:
+                      invalid += 1; print("[警告] 跳过无效记录：%s" % name); continue
+                  target, days_left, kind = nb
+                  p["solar"] = target.isoformat(); p["kind"] = kind; p["days_left"] = days_left
+                  if days_left in PUSH_DAYS:
+                      p["lunar_label"] = ("（农历 %d月%d日）" % (int(p["month"]), int(p["day"]))) if kind == "农历" else ""
+                      matched.append(p)
+                      print("[命中] %s %s生日 %s（距 %d 天）" % (name, kind, target, days_left))
+                  else:
+                      print("[跳过] %s %s生日 %s（距 %d 天，不在提前范围）" % (name, kind, target, days_left))
+              print("[统计] 命中 %d 人；分组跳过 %d；未开启 %d；无效 %d" % (len(matched), skip_g, skip_r, invalid))
+              if not matched:
+                  print("[完成] 今天没有需要提前提醒的生日。"); return
+              lines = []
+              for p in matched:
+                  when = "明天" if p["days_left"] == 1 else ("%d 天后" % p["days_left"])
+                  lines.append("· %s（%s）：%s（%s）%s" % (p["name"], p["kind"], when, p["solar"], p["lunar_label"]))
+              title = "🎂 生日提醒 · 提前 1 天"
+              content = "以下家人即将过生日，请提前准备：\n\n" + "\n".join(lines)
+              print("---- 推送内容预览 ----"); print(content); print("----------------------")
+              if DRY_RUN:
+                  print("[DRY_RUN] 未真正发送。"); return
+              if not SERVERCHAN_TOKEN:
+                  print("[错误] 未设置 SERVERCHAN_TOKEN。"); sys.exit(1)
+              ok, msg = push_serverchan(SERVERCHAN_TOKEN, title, content)
+              if ok:
+                  print("[成功] 已推送 %d 条生日提醒。" % len(matched))
+              else:
+                  print("[失败] %s" % msg); sys.exit(1)
+
+          if __name__ == "__main__":
+              main()
+          PYEOF
+
+      - name: 运行生日提醒推送
+        run: python reminder.py
+        env:
+          BIRTHDAYS_JSON: ${{ secrets.BIRTHDAYS_JSON }}
+          SERVERCHAN_TOKEN: ${{ secrets.SERVERCHAN_TOKEN }}
+          PUSH_GROUPS: 我的好友
+          PUSH_DAYS: "1"
