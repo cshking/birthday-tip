@@ -1,0 +1,12 @@
+[
+  {"id":"moa1fd6zquv9ch4ilw","name":"陈升晖","gender":"男","date":"1978-04-20","year":1978,"month":4,"day":20,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa1fd6zjdq331hmse","name":"吴彦臻","gender":"男","date":"2004-05-11","year":2004,"month":5,"day":11,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa1fd6zji2kl37fr29","name":"陈平聪","gender":"男","date":"2009-06-22","year":2009,"month":6,"day":22,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa1jagcnpnvjvemeip","name":"曹洁","gender":"女","date":"1979-08-24","year":1979,"month":8,"day":24,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa1xsxlkerwrjtlri","name":"吴晟","gender":"男","date":"1969-02-16","year":1969,"month":2,"day":16,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa1z3zswehzpodcgj","name":"陈平馨","gender":"女","date":"2016-07-13","year":2016,"month":7,"day":13,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa1zyav37ft7t64pws","name":"陈晓霞","gender":"女","date":"1975-08-02","year":1975,"month":8,"day":2,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa218c0picp1bhpdp","name":"吴金娣","gender":"女","date":"1953-08-18","year":1953,"month":8,"day":18,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa228wvzavxcze0trm","name":"吴盈影","gender":"女","date":"1999-09-05","year":1999,"month":9,"day":5,"isLunar":true,"group":"我的好友","reminder":true},
+  {"id":"moa232g9akacoj2s6u6","name":"陈健尔","gender":"男","date":"1954-09-16","year":1954,"month":9,"day":16,"isLunar":true,"group":"我的好友","reminder":true}
+]
